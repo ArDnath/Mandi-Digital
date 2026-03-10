@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { authClient } from "@/lib/auth-client";
 
 export function useSessionState() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   const checkSession = useCallback(async () => {
