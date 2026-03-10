@@ -1,5 +1,33 @@
 "use server";
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { db } from "@/db/index";
+import { eq, inArray, not } from "drizzle-orm";
+import { user } from "@/db/schema";
+
+export const getCurrentUser = async() =>{
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    if(!session || !session.user){
+        redirect("/sign-in");
+    }
+
+    const currentUser = await db.query.user.findFirst({
+        where: eq(user.id, session.user.id)
+    });
+
+    if (!currentUser){
+        redirect("/sign-in");
+    }
+
+    return{
+        ...session,
+        currentUser,
+    };
+};
 
 export const signIn= async(email: string, password: string)=>{
     try {

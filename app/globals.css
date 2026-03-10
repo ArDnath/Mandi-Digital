@@ -123,3 +123,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+#spline-watermark, 
+canvas + a {
+    display: none !important;
+}
